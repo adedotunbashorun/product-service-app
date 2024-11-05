@@ -39,7 +39,7 @@ func main() {
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
-	db.AutoMigrate(&models.User{}, &models.Role{})
+	db.AutoMigrate(&models.User{}, &models.Role{}, &models.Product{}, &models.Order{}, &models.OrderItem{})
 	if err := seeder.SeedRoles(db); err != nil {
 		log.Fatalf("Could not seed roles: %v", err)
 	}
