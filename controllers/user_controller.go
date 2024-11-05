@@ -59,6 +59,16 @@ func (ctrl *UserController) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"token": token})
 }
 
+// GetUser godoc
+// @Summary Get current logged in user
+// @Description Get currently looged in user
+// @Tags user
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} map[string]interface{}
+// @Failure 400 {object} map[string]string{"error":string}
+// @Failure 404 {object} map[string]string{"error":string}
+// @Router /api/user/me [get]
 func (ctrl *UserController) GetCurrentUser(c *gin.Context) {
 	userID, exists := c.Get("userID")
 	log.Println("userId", userID)
