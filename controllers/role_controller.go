@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"net/http"
-	"user-management-mysql/models"
-	"user-management-mysql/services"
+	"product-service-app/models"
+	"product-service-app/services"
 
 	"github.com/gin-gonic/gin"
 )
@@ -23,8 +23,7 @@ func NewRoleController(roleService *services.RoleService) *RoleController {
 // @Accept json
 // @Produce json
 // @Param Role body models.CreateRoleInput true "Role Data"
-// @Success 201 {object} Role
-// @Failure 400 {object} gin.H{"error": "Invalid input"}
+// @Success 201 {object} models.Role
 // @Router /api/roles [post]
 // @Security BearerAuth
 func (ctrl *RoleController) CreateRole(c *gin.Context) {
@@ -70,8 +69,7 @@ func (ctrl *RoleController) GetRoles(c *gin.Context) {
 // @Produce json
 // @Param id path int true "Role ID"
 // @Param Role body models.UpdateRoleInput true "Role Data"
-// @Success 201 {object} Role
-// @Failure 400 {object} gin.H{"error": "Invalid input"}
+// @Success 201 {object} models.Role
 // @Router /api/roles/:id [put]
 // @Security BearerAuth
 func (ctrl *RoleController) UpdateRole(c *gin.Context) {
@@ -97,8 +95,7 @@ func (ctrl *RoleController) UpdateRole(c *gin.Context) {
 // @Tags Roles
 // @Produce json
 // @Param id path int true "Role ID"
-// @Success 200 {object} Role
-// @Failure 404 {object} gin.H{"error": "Role not found"}
+// @Success 200 {object} models.Role
 // @Router /api/roles/{id} [delete]
 // @Security BearerAuth
 func (ctrl *RoleController) DeleteRole(c *gin.Context) {

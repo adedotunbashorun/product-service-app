@@ -1,8 +1,8 @@
 package services
 
 import (
-	"user-management-mysql/models"
-	"user-management-mysql/repositories"
+	"product-service-app/models"
+	"product-service-app/repositories"
 )
 
 type RoleService struct {

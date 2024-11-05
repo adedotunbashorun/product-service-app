@@ -3,8 +3,8 @@ package controllers
 import (
 	"log"
 	"net/http"
-	"user-management-mysql/models"
-	"user-management-mysql/services"
+	"product-service-app/models"
+	"product-service-app/services"
 
 	"github.com/gin-gonic/gin"
 )
@@ -65,9 +65,7 @@ func (ctrl *UserController) Login(c *gin.Context) {
 // @Tags user
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} map[string]interface{}
-// @Failure 400 {object} map[string]string{"error":string}
-// @Failure 404 {object} map[string]string{"error":string}
+// @Success 200 {object} models.User
 // @Router /api/user/me [get]
 func (ctrl *UserController) GetCurrentUser(c *gin.Context) {
 	userID, exists := c.Get("userID")

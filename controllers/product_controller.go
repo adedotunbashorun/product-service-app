@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"net/http"
-	"user-management-mysql/models"
-	"user-management-mysql/services"
+	"product-service-app/models"
+	"product-service-app/services"
 
 	"github.com/gin-gonic/gin"
 )
@@ -23,8 +23,7 @@ func NewProductController(productService *services.ProductService) *ProductContr
 // @Accept json
 // @Produce json
 // @Param product body models.CreateProductInput true "Product Data"
-// @Success 201 {object} Product
-// @Failure 400 {object} gin.H{"error": "Invalid input"}
+// @Success 201 {object} models.Product
 // @Router /api/products [post]
 // @Security BearerAuth
 func (pc *ProductController) CreateProduct(c *gin.Context) {
@@ -68,8 +67,7 @@ func (pc *ProductController) GetAllProducts(c *gin.Context) {
 // @Tags products
 // @Produce json
 // @Param id path int true "Product ID"
-// @Success 200 {object} Product
-// @Failure 404 {object} gin.H{"error": "Product not found"}
+// @Success 200 {object} models.Product
 // @Router /api/products/{id} [get]
 // @Security BearerAuth
 func (pc *ProductController) GetProductByID(c *gin.Context) {
@@ -91,8 +89,7 @@ func (pc *ProductController) GetProductByID(c *gin.Context) {
 // @Produce json
 // @Param id path int true "Product ID"
 // @Param product body models.UpdateProductInput true "Product Data"
-// @Success 201 {object} Product
-// @Failure 400 {object} gin.H{"error": "Invalid input"}
+// @Success 201 {object} models.Product
 // @Router /api/products/:id [put]
 // @Security BearerAuth
 func (pc *ProductController) UpdateProduct(c *gin.Context) {
@@ -118,8 +115,7 @@ func (pc *ProductController) UpdateProduct(c *gin.Context) {
 // @Tags products
 // @Produce json
 // @Param id path int true "Product ID"
-// @Success 200 {object} Product
-// @Failure 404 {object} gin.H{"error": "Product not found"}
+// @Success 200 {object} models.Product
 // @Router /api/products/{id} [delete]
 // @Security BearerAuth
 func (pc *ProductController) DeleteProduct(c *gin.Context) {

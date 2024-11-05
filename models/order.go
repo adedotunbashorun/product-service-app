@@ -1,9 +1,5 @@
 package models
 
-import (
-	"gorm.io/gorm"
-)
-
 type OrderStatus string
 
 const (
@@ -14,14 +10,14 @@ const (
 )
 
 type Order struct {
-	gorm.Model
+	BaseModel
 	UserID     uint        `json:"user_id"`
 	Status     OrderStatus `json:"status" gorm:"default:'Pending'"`
 	OrderItems []OrderItem `json:"order_items"`
 }
 
 type OrderItem struct {
-	gorm.Model
+	BaseModel
 	OrderID   uint `json:"order_id"`
 	ProductID uint `json:"product_id"`
 	Quantity  uint `json:"quantity"`

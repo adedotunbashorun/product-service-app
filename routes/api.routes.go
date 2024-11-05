@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"user-management-mysql/controllers"
+	"product-service-app/controllers"
 
 	"github.com/gin-gonic/gin"
 )

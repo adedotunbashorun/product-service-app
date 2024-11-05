@@ -2,8 +2,8 @@ package middleware
 
 import (
 	"net/http"
+	"product-service-app/utils" // Import your JWT utility
 	"strings"
-	"user-management-mysql/utils" // Import your JWT utility
 
 	"github.com/gin-gonic/gin"
 )

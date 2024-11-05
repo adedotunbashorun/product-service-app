@@ -2,9 +2,9 @@ package services
 
 import (
 	"errors"
-	"user-management-mysql/models"
-	"user-management-mysql/repositories"
-	"user-management-mysql/utils"
+	"product-service-app/models"
+	"product-service-app/repositories"
+	"product-service-app/utils"
 
 	"golang.org/x/crypto/bcrypt"
 )

@@ -1,0 +1,463 @@
+basePath: /api
+definitions:
+  models.CreateProductInput:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+    required:
+    - description
+    - name
+    - price
+    type: object
+  models.CreateRoleInput:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    required:
+    - description
+    - name
+    type: object
+  models.Order:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      id:
+        type: integer
+      order_items:
+        items:
+          $ref: '#/definitions/models.OrderItem'
+        type: array
+      status:
+        $ref: '#/definitions/models.OrderStatus'
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.OrderItem:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      id:
+        type: integer
+      order_id:
+        type: integer
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  models.OrderStatus:
+    enum:
+    - Pending
+    - Shipped
+    - Delivered
+    - Canceled
+    type: string
+    x-enum-varnames:
+    - Pending
+    - Shipped
+    - Delivered
+    - Canceled
+  models.Product:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: number
+      updated_at:
+        type: string
+    type: object
+  models.Role:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.UpdateProductInput:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+    type: object
+  models.UpdateRoleInput:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    type: object
+  models.User:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      role:
+        $ref: '#/definitions/models.Role'
+      role_id:
+        description: Foreign key to Role
+        type: integer
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: API documentation for Product Management Service.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Product Management API
+  version: "1.0"
+paths:
+  /api/orders:
+    get:
+      consumes:
+      - application/json
+      description: Get all orders placed by the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Order'
+            type: array
+      security:
+      - BearerAuth: []
+      summary: List all orders for a user
+      tags:
+      - orders
+    post:
+      consumes:
+      - application/json
+      description: Place an order for one or more products
+      parameters:
+      - description: Order Items
+        in: body
+        name: order
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/models.OrderItem'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Order'
+      security:
+      - BearerAuth: []
+      summary: Place a new order
+      tags:
+      - orders
+  /api/orders/{id}/cancel:
+    put:
+      description: Cancel an order if it's still pending
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: Order canceled successfully
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Cancel a pending order
+      tags:
+      - orders
+  /api/orders/{id}/status:
+    put:
+      description: Update order status (admin only)
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: New Status
+        in: body
+        name: status
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Status updated successfully
+          schema:
+            type: string
+      security:
+      - BearerAuth: []
+      summary: Update the status of an order
+      tags:
+      - orders
+  /api/products:
+    get:
+      consumes:
+      - application/json
+      description: Get all products placed by the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Product'
+            type: array
+      security:
+      - BearerAuth: []
+      summary: List all products for a user
+      tags:
+      - products
+    post:
+      consumes:
+      - application/json
+      description: Create a new product with the input payload
+      parameters:
+      - description: Product Data
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateProductInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Product'
+      security:
+      - BearerAuth: []
+      summary: Create a new product
+      tags:
+      - products
+  /api/products/:id:
+    put:
+      consumes:
+      - application/json
+      description: update existing product with the input payload
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Product Data
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateProductInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Product'
+      security:
+      - BearerAuth: []
+      summary: update existing product
+      tags:
+      - products
+  /api/products/{id}:
+    delete:
+      description: delete a single product by its ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Product'
+      security:
+      - BearerAuth: []
+      summary: Delete a product by ID
+      tags:
+      - products
+    get:
+      description: Retrieve a single product by its ID
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Product'
+      security:
+      - BearerAuth: []
+      summary: Get a product by ID
+      tags:
+      - products
+  /api/roles:
+    get:
+      consumes:
+      - application/json
+      description: Get all Roles placed by the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Role'
+            type: array
+      security:
+      - BearerAuth: []
+      summary: List all Roles for a user
+      tags:
+      - Roles
+    post:
+      consumes:
+      - application/json
+      description: Create a new Role with the input payload
+      parameters:
+      - description: Role Data
+        in: body
+        name: Role
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateRoleInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Role'
+      security:
+      - BearerAuth: []
+      summary: Create a new Role
+      tags:
+      - Roles
+  /api/roles/:id:
+    put:
+      consumes:
+      - application/json
+      description: update existing Role with the input payload
+      parameters:
+      - description: Role ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Role Data
+        in: body
+        name: Role
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateRoleInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Role'
+      security:
+      - BearerAuth: []
+      summary: update existing Role
+      tags:
+      - Roles
+  /api/roles/{id}:
+    delete:
+      description: delete a single Role by its ID
+      parameters:
+      - description: Role ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Role'
+      security:
+      - BearerAuth: []
+      summary: Delete a Role by ID
+      tags:
+      - Roles
+  /api/user/me:
+    get:
+      consumes:
+      - application/json
+      description: Get currently looged in user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Get current logged in user
+      tags:
+      - user
+swagger: "2.0"

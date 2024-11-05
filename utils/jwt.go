@@ -3,8 +3,8 @@ package utils
 import (
 	"errors"
 	"log"
+	"product-service-app/config"
 	"time"
-	"user-management-mysql/config"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"

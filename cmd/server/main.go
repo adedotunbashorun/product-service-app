@@ -2,25 +2,25 @@ package main
 
 import (
 	"log"
-	"user-management-mysql/config"
-	"user-management-mysql/controllers"
-	"user-management-mysql/models"
-	"user-management-mysql/repositories"
-	"user-management-mysql/routes"
-	"user-management-mysql/seeder"
-	"user-management-mysql/services"
+	"product-service-app/config"
+	"product-service-app/controllers"
+	"product-service-app/docs"
+	"product-service-app/models"
+	"product-service-app/repositories"
+	"product-service-app/routes"
+	"product-service-app/seeder"
+	"product-service-app/services"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/swaggo/swag/example/basic/docs"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 // @title Product Management API
 // @version 1.0
-// @description API documentation for User Management Service.
+// @description API documentation for Product Management Service.
 // @termsOfService http://swagger.io/terms/
 // @contact.name API Support
 // @contact.url http://www.swagger.io/support

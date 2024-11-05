@@ -1,6 +1,6 @@
 ## Description
-git clone https://github.com/adedotunbashorun/user-management-mysql.git
-cd user-management-mysql
+git clone https://github.com/adedotunbashorun/product-service-app.git
+cd product-service-app
 
 ## Installation
 

@@ -1,4 +1,4 @@
-module user-management-mysql
+module product-service-app
 
 go 1.22.0
 

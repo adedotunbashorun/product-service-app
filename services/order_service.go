@@ -2,8 +2,8 @@ package services
 
 import (
 	"errors"
-	"user-management-mysql/models"
-	"user-management-mysql/repositories"
+	"product-service-app/models"
+	"product-service-app/repositories"
 )
 
 type OrderService struct {

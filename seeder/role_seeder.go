@@ -1,7 +1,7 @@
 package seeder
 
 import (
-	"user-management-mysql/models"
+	"product-service-app/models"
 
 	"gorm.io/gorm"
 )

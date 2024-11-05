@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"net/http"
-	"user-management-mysql/models"
-	"user-management-mysql/services"
+	"product-service-app/models"
+	"product-service-app/services"
 
 	"strconv"
 
