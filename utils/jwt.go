@@ -4,12 +4,13 @@ import (
 	"errors"
 	"log"
 	"time"
+	"user-management-mysql/config"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
 )
 
-var jwtSecret = []byte("your_secret_key")
+var jwtSecret = []byte(config.LoadConfig().JwtSecret)
 
 type Claims struct {
 	UserID uint   `json:"userID"`
