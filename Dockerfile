@@ -1,8 +1,11 @@
 # Use an official Golang image as a base image
-FROM golang:1.22
+FROM golang:1.23
 
 # Set the Current Working Directory inside the container
 WORKDIR /app
+
+# Install air from the new repository path
+RUN go install github.com/air-verse/air@latest
 
 # Copy go.mod and go.sum files
 COPY go.mod go.sum ./
@@ -19,5 +22,6 @@ RUN go build -o main ./cmd/server
 # Expose port 8080 to the outside world
 EXPOSE 8080
 
-# Command to run the executable
-CMD ["./main"]
+# Set the entrypoint to use air for live-reloading
+CMD ["air"]
+

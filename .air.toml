@@ -1,0 +1,22 @@
+# Root directory of your project
+root = "."
+
+# Temporary directory for compiled binary (this is where your binary will be placed)
+tmp_dir = "tmp"
+
+[build]
+  # Command to build the Go application and output the binary to ./tmp/main
+  cmd = "go build -o ./tmp/main ./cmd/server"
+  
+  # The path to the binary inside tmp_dir
+  bin = "./tmp/main"
+
+  # Full command to run the binary with environment variables
+  full_bin = "APP_ENV=dev ./tmp/main"
+  
+  # You can set additional build flags here, e.g., if you want to include tests or use a specific environment.
+  # flags = ["-tags", "mytag"]
+  
+[logger]
+  # Set the logger to watch all file changes (optional)
+  log = true
