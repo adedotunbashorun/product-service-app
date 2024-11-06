@@ -7,11 +7,15 @@ import (
 )
 
 type OrderService struct {
-	orderRepo *repositories.OrderRepository
+	BaseService[models.Order]
+	orderRepository *repositories.OrderRepository
 }
 
 func NewOrderService(orderRepo *repositories.OrderRepository) *OrderService {
-	return &OrderService{orderRepo: orderRepo}
+	return &OrderService{
+		BaseService:     BaseService[models.Order]{Repository: &orderRepo.BaseRepository},
+		orderRepository: orderRepo,
+	}
 }
 
 func (s *OrderService) PlaceOrder(userID uint, items []models.OrderItem) (*models.Order, error) {
@@ -20,25 +24,25 @@ func (s *OrderService) PlaceOrder(userID uint, items []models.OrderItem) (*model
 		Status:     models.Pending,
 		OrderItems: items,
 	}
-	err := s.orderRepo.CreateOrder(order)
+	err := s.BaseService.Create(order)
 	return order, err
 }
 
 func (s *OrderService) ListOrders(userID uint) ([]models.Order, error) {
-	return s.orderRepo.FindOrdersByUserID(userID)
+	return s.orderRepository.FindOrdersByUserID(userID)
 }
 
 func (s *OrderService) CancelOrder(orderID uint) error {
-	order, err := s.orderRepo.FindOrderByID(orderID)
+	order, err := s.orderRepository.FindOrderByID(orderID)
 	if err != nil {
 		return err
 	}
 	if order.Status != models.Pending {
 		return errors.New("only pending orders can be canceled")
 	}
-	return s.orderRepo.UpdateOrderStatus(orderID, models.Canceled)
+	return s.orderRepository.UpdateOrderStatus(orderID, models.Canceled)
 }
 
 func (s *OrderService) UpdateOrderStatus(orderID uint, status models.OrderStatus) error {
-	return s.orderRepo.UpdateOrderStatus(orderID, status)
+	return s.orderRepository.UpdateOrderStatus(orderID, status)
 }

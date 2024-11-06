@@ -14,9 +14,9 @@ func RegisterUserRoutes(router *gin.RouterGroup, userController *controllers.Use
 		auth.POST("/login", userController.Login)
 	}
 
-	user := router.Group("/user")
-	user.Use(middleware.AuthMiddleware()) // Apply authentication middleware
+	users := router.Group("/users")
+	users.Use(middleware.AuthMiddleware()) // Apply authentication middleware
 	{
-		user.GET("/me", userController.GetCurrentUser)
+		users.GET("/me", userController.GetCurrentUser)
 	}
 }

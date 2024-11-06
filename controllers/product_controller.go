@@ -52,7 +52,7 @@ func (pc *ProductController) CreateProduct(c *gin.Context) {
 // @Router /api/products [get]
 // @Security BearerAuth
 func (pc *ProductController) GetAllProducts(c *gin.Context) {
-	products, err := pc.ProductService.GetAllProducts()
+	products, err := pc.ProductService.GetAll()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not retrieve products"})
 		return
@@ -72,7 +72,7 @@ func (pc *ProductController) GetAllProducts(c *gin.Context) {
 // @Security BearerAuth
 func (pc *ProductController) GetProductByID(c *gin.Context) {
 	id := c.Param("id")
-	product, err := pc.ProductService.GetProductByID(id)
+	product, err := pc.ProductService.FindByModelID(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Product not found"})
 		return
@@ -120,7 +120,7 @@ func (pc *ProductController) UpdateProduct(c *gin.Context) {
 // @Security BearerAuth
 func (pc *ProductController) DeleteProduct(c *gin.Context) {
 	id := c.Param("id")
-	err := pc.ProductService.DeleteProduct(id)
+	err := pc.ProductService.DeleteByModelID(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not delete product"})
 		return

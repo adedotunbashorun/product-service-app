@@ -7,12 +7,16 @@ import (
 
 // ProductService provides methods to manage products.
 type ProductService struct {
-	productRepo *repositories.ProductRepository
+	BaseService[models.Product]
+	productRepository *repositories.ProductRepository
 }
 
 // NewProductService creates a new ProductService.
 func NewProductService(productRepo *repositories.ProductRepository) *ProductService {
-	return &ProductService{productRepo: productRepo}
+	return &ProductService{
+		BaseService:       BaseService[models.Product]{Repository: &productRepo.BaseRepository},
+		productRepository: productRepo,
+	}
 }
 
 // CreateProduct creates a new product.
@@ -22,23 +26,13 @@ func (s *ProductService) CreateProduct(input models.CreateProductInput) (models.
 		Description: input.Description,
 		Price:       input.Price,
 	}
-	err := s.productRepo.Create(&product)
+	err := s.productRepository.Create(&product)
 	return product, err
-}
-
-// GetAllProducts retrieves all products.
-func (s *ProductService) GetAllProducts() ([]models.Product, error) {
-	return s.productRepo.GetAll()
-}
-
-// GetProductByID retrieves a product by its ID.
-func (s *ProductService) GetProductByID(id string) (models.Product, error) {
-	return s.productRepo.GetByID(id)
 }
 
 // UpdateProduct updates an existing product.
 func (s *ProductService) UpdateProduct(id string, input models.UpdateProductInput) (models.Product, error) {
-	product, err := s.productRepo.GetByID(id)
+	product, err := s.productRepository.GetByID(id)
 	if err != nil {
 		return product, err
 	}
@@ -53,11 +47,6 @@ func (s *ProductService) UpdateProduct(id string, input models.UpdateProductInpu
 		product.Price = *input.Price
 	}
 
-	err = s.productRepo.Update(&product)
+	err = s.productRepository.Update(&product)
 	return product, err
-}
-
-// DeleteProduct deletes a product by its ID.
-func (s *ProductService) DeleteProduct(id string) error {
-	return s.productRepo.Delete(id)
 }

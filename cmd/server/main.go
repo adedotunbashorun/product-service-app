@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"product-service-app/config"
 	"product-service-app/controllers"
@@ -10,6 +11,7 @@ import (
 	"product-service-app/routes"
 	"product-service-app/seeder"
 	"product-service-app/services"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -17,6 +19,27 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
+
+func connectToDB() *gorm.DB {
+	// var err error
+	// Load configuration
+	cfg := config.LoadConfig()
+
+	// Connect to PostgreSQL
+	dsn := "host=" + cfg.PostgresHost + " user=" + cfg.PostgresUser + " password=" + cfg.PostgresPassword + " dbname=" + cfg.PostgresDB + " port=" + cfg.PostgresPort + " sslmode=disable"
+
+	for retries := 5; retries > 0; retries-- {
+		db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+		if err == nil {
+			fmt.Println("Database connected successfully!")
+			return db
+		}
+		fmt.Println("Failed to connect to database. Retrying in 5 seconds...")
+		time.Sleep(5 * time.Second)
+	}
+	fmt.Println("Could not connect to the database. Exiting.")
+	return nil
+}
 
 // @title Product Management API
 // @version 1.0
@@ -30,18 +53,23 @@ import (
 // @host localhost:8080
 // @BasePath /api
 func main() {
-	// Load configuration
-	cfg := config.LoadConfig()
-
-	// Connect to PostgreSQL
-	dsn := "host=" + cfg.PostgresHost + " user=" + cfg.PostgresUser + " password=" + cfg.PostgresPassword + " dbname=" + cfg.PostgresDB + " port=" + cfg.PostgresPort + " sslmode=disable"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil {
-		log.Fatal("Failed to connect to database:", err)
+	db := connectToDB()
+	if db == nil {
+		fmt.Println("Exiting application due to database connection failure.")
+		return
 	}
 	db.AutoMigrate(&models.User{}, &models.Role{}, &models.Product{}, &models.Order{}, &models.OrderItem{})
 	if err := seeder.SeedRoles(db); err != nil {
 		log.Fatalf("Could not seed roles: %v", err)
+	}
+	if err := seeder.SeedUsers(db); err != nil {
+		log.Fatalf("Could not seed users: %v", err)
+	}
+	if err := seeder.SeedProducts(db); err != nil {
+		log.Fatalf("Could not seed products: %v", err)
+	}
+	if err := seeder.SeedOrders(db); err != nil {
+		log.Fatalf("Could not seed orders: %v", err)
 	}
 
 	// Initialize repositories
