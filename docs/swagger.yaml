@@ -529,4 +529,9 @@ paths:
       summary: Get current logged in user
       tags:
       - user
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

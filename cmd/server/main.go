@@ -52,6 +52,9 @@ func connectToDB() *gorm.DB {
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 // @host localhost:8080
 // @BasePath /api
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 func main() {
 	db := connectToDB()
 	if db == nil {
